@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>譜面詰め記録用</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <h2 id="chart_now"></h2>
+      <h2 class="spacer"></h2>
+      <div id="session_past"></div>
+      <div id="session_now"></div>
+      <div id="new-session-container"></div>
+      <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+          <p id="modal-message"></p>
+          <div class="modal-buttons">
+            <button id="modal-confirm" class="modal-btn modal-confirm-btn">
+              終了
+            </button>
+            <button id="modal-cancel" class="modal-btn modal-cancel-btn">
+              キャンセル
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="modal-nav-overlay" class="modal-overlay">
+        <div id="nav-modal">
+          <span class="modal-nav-text">一覧</span>
+          <div id="modal-row"></div>
+
+          <span class="modal-nav-text">作成</span>
+          <div id="chart-new-container"></div>
+          <span id="close-nav">×</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
