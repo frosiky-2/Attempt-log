@@ -38,7 +38,6 @@ if (hash) {
 }
 
 createNavsUI();
-document.getElementById("switch-icon").addEventListener("click", showNavModal);
 
 window.addEventListener("hashchange", () => {
   location.reload();
@@ -557,3 +556,4 @@ function showNavModal() {
 function createNewLog(title) {
   const data = { title: title };
 }
+
