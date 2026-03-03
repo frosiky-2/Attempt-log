@@ -2,7 +2,56 @@ let data = {};
 let chart_titles = [];
 const key = "playData";
 const pass_probability_e = 0.4;
-const sampleData = [];
+// const sampleData = [
+//   {
+//     title: "譜面1",
+//     sections: [
+//       { name: "セクション1" },
+//       { name: "セクション2" },
+//       { name: "セクション3" },
+//       { name: "セクション4" },
+//       { name: "セクション5" },
+//     ],
+//     sessions: [
+//       {
+//         date: "2026-2-27",
+//         timestamp: "1772132545359",
+//         n: 1,
+//         play: ["0", "0", "0", "0","0"],
+//       },
+//       {
+//         date: "2026-2-27",
+//         timestamp: "17721325457789",
+//         n: 0,
+//         play: ["", "", "", "",""],
+//       },
+//     ],
+//   },
+//   {
+//     title: "譜面2",
+//     sections: [
+//       { name: "セクション1" },
+//       { name: "セクション2" },
+//       { name: "セクション3" },
+//       { name: "セクション4" },
+//       { name: "セクション5" },
+//     ],
+//     sessions: [
+//       {
+//         date: "2026-2-27",
+//         timestamp: "1772132545359",
+//         n: 1,
+//         play: ["0", "0", "0", "0","0"],
+//       },
+//       {
+//         date: "2026-2-27",
+//         timestamp: "17721325457789",
+//         n: 0,
+//         play: ["", "", "", "",""],
+//       },
+//     ],
+//   },
+// ];
 // localStorage.setItem(key, JSON.stringify(sampleData));
 
 const app = document.getElementById("app");
@@ -32,8 +81,9 @@ if (hash) {
     data = loaded;
   }
 } else {
-  document.getElementById("chart_now").innerHTML =
-    `<span id="switch-icon">⇄</span><span class="chart-title">存在しないリンク先です</span>`;
+  document.getElementById(
+    "chart_now",
+  ).innerHTML = `<span id="switch-icon">⇄</span><span class="chart-title">存在しないリンク先です</span>`;
   session_now.innerHTML = `<div class="session-nav"></span>ここには譜面記録が存在しません。。</div>`;
 }
 
@@ -54,7 +104,7 @@ function loadData(title) {
         data = e;
         current_session = data.sessions.length - 1;
         sections = data.sections;
-
+        console.log(sections)
         sections.forEach(() => pass_input.push(0));
 
         document.title = `${data.title} - 記録`;
@@ -66,9 +116,14 @@ function loadData(title) {
         const dot = document.createElement("span");
         dot.classList.add("session-dot");
         dot.textContent = "● ";
-        session.innerHTML = `${data.sessions[current_session].name || "セッション" + (current_session + 1)}
+        session.innerHTML = `${
+          data.sessions[current_session].name ||
+          "セッション" + (current_session + 1)
+        }
          - ${data.sessions[current_session].date}
-         　　<span id="session-n">総プレイ: ${data.sessions[current_session].n}</span>`;
+         　　<span id="session-n">総プレイ: ${
+           data.sessions[current_session].n
+         }</span>`;
         session.insertBefore(dot, session.firstChild);
         session_now.appendChild(session);
         createCheckboxes();
@@ -77,8 +132,9 @@ function loadData(title) {
         return data;
       }
     }
-    document.getElementById("chart_now").innerHTML =
-      `<span id="switch-icon">⇄</span><span class="chart-title">該当する譜面が存在しませんでした。</span>`;
+    document.getElementById(
+      "chart_now",
+    ).innerHTML = `<span id="switch-icon">⇄</span><span class="chart-title">該当する譜面が存在しませんでした。</span>`;
   }
   return null;
 }
@@ -105,7 +161,7 @@ function getDate() {
   const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
-
+// str内で存在数をカウント
 function count(str, target) {
   let count = 0;
   for (let i = 0; i < str.length; i++) {
@@ -117,7 +173,7 @@ function count(str, target) {
 }
 
 function countS(str) {
-  // str内のtargetの連続毎にカウント。
+  // str内のtargetの連続毎にカウント
   const counts = [];
   const blocks = str.split("0");
   for (const block of blocks) {
@@ -216,8 +272,9 @@ function add(input) {
     data.sessions[current_session].play[i] += input[i];
   }
   data.sessions[current_session].n++;
-  document.getElementById("session-n").textContent =
-    `N: ${data.sessions[current_session].n}`;
+  document.getElementById(
+    "session-n",
+  ).textContent = `N: ${data.sessions[current_session].n}`;
   saveData(data);
 }
 
@@ -226,6 +283,7 @@ function createCheckboxes() {
   const note_grid = document.createElement("div");
   note_grid.classList.add("note-grid");
   const refresh = [];
+  console.log(sections.length) 
   for (let i = 0; i < sections.length; i++) {
     const checkbox = document.createElement("input");
     checkbox.classList.add("checkbox");
@@ -239,7 +297,12 @@ function createCheckboxes() {
     const num_pass = document.createElement("span");
     num_pass.classList.add("num-pass");
     num_pass.classList.add("text");
-    num_pass.textContent = `${count(data.sessions[current_session].play[i], "1")}`;
+    
+　　console.log(current_session,i)
+    num_pass.textContent = `${count(
+      data.sessions[current_session].play[i],
+      "1",
+    )}`;
     pass_input_num.push(num_pass);
     const passRatePercentage =
       (data.sessions[current_session].n != 0
@@ -334,7 +397,9 @@ function createPastSessions() {
     const total_plays = session.n;
     const session_header = document.createElement("div");
     session_header.classList.add("session");
-    session_header.textContent = `${data.sessions[sessionIndex].name || "セッション" + (sessionIndex + 1)} - ${session.date}　　総プレイ: ${total_plays}`;
+    session_header.textContent = `${
+      data.sessions[sessionIndex].name || "セッション" + (sessionIndex + 1)
+    } - ${session.date}　　総プレイ: ${total_plays}`;
     past_session_div.appendChild(session_header);
 
     const past_grid = document.createElement("div");
@@ -420,7 +485,11 @@ function createNewSessionUI() {
 }
 
 function startNewSession(name) {
-  const message = `現在のセッション(${data.sessions[current_session].name || "セッション" + (current_session + 1)})を終了しますか？<br>終了後、新しいセッション(${name || "セッション" + (current_session + 2)})が開始されます。`;
+  const message = `現在のセッション(${
+    data.sessions[current_session].name || "セッション" + (current_session + 1)
+  })を終了しますか？<br>終了後、新しいセッション(${
+    name || "セッション" + (current_session + 2)
+  })が開始されます。`;
   showModal(message, () => {
     const newSession = {
       date: getDate(),
@@ -535,25 +604,40 @@ function showNavModal() {
   const modal_row = document.getElementById("modal-row");
   const btn_close = document.getElementById("close-nav");
 
-  const handleCloseClick = (event) => {
-    if (event.target == overlay) handleCancel();
-  };
+  modal_row.innerHTML = "";
+  const loaded = localStorage.getItem(key);
+  if (loaded) {
+    const parsed = JSON.parse(loaded);
+    parsed.forEach((item) => {
+      const btn = document.createElement("div");
+      btn.className = "modal-btn modal-nav-btn";
+      if (item.title == data.title) {
+        btn.innerHTML = "<span class='session-dot'>●　</span><span class='nav-now-title'>" + item.title + "</span>";
+      } else{
+        btn.innerHTML="<span class='nav-title'>" + item.title + "</span>";
+        btn.onclick = () => {
+        location.hash = item.title;
+      };
+      }
+      
+      modal_row.appendChild(btn);
+    });
+  }
 
-  const handleOverlayClick = (event) => {
-    if (event.target == overlay) handleCancel();
-  };
-
-  const handleCancel = () => {
+  btn_close.onclick = () => {
     overlay.classList.remove("active");
-    btn_close.removeEventListener("click", handleCloseClick);
-    overlay.removeEventListener("click", handleOverlayClick);
   };
 
   overlay.classList.add("active");
-  overlay.addEventListener("click", handleOverlayClick);
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  const btn_show_nav = document.getElementById("switch-icon");
+  if (btn_show_nav) {
+    btn_show_nav.addEventListener("click", showNavModal);
+  }
+});
 
 function createNewLog(title) {
   const data = { title: title };
 }
-
